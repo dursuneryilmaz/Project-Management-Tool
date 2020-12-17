@@ -15,11 +15,11 @@ public class Project {
     private long id;
     @NotBlank(message = "Project name cannot be blank!")
     private String projectName;
-    @NotBlank(message = "Project name cannot be blank!")
-    @Size(min = 3, max = 8, message = "Please user 3 to 8 characters!")
+    @NotBlank(message = "Project code cannot be blank!")
+    @Size(min = 3, max = 8, message = "Please use 3 to 8 characters!")
     @Column(updatable = false)
     private String projectCode;
-    @NotBlank(message = "Project name cannot be blank!")
+    @NotBlank(message = "Project description cannot be blank!")
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date startDate;

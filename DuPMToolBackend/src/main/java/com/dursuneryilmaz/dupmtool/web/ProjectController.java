@@ -2,6 +2,7 @@ package com.dursuneryilmaz.dupmtool.web;
 
 import com.dursuneryilmaz.dupmtool.domain.Project;
 import com.dursuneryilmaz.dupmtool.service.ProjectService;
+import com.dursuneryilmaz.dupmtool.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,13 @@ import javax.validation.Valid;
 public class ProjectController {
     @Autowired
     ProjectService projectService;
+    @Autowired
+    ValidationService validationService;
 
     @PostMapping
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-        if (result.hasErrors()) {
-            return new ResponseEntity<String>("Invalid Object", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult bindingResult) {
+        ResponseEntity<?> errorMap = validationService.mapValidationErrors(bindingResult);
+        if (errorMap != null) return errorMap;
         project = projectService.saveOrUpdate(project);
         return new ResponseEntity<Project>(project, HttpStatus.CREATED);
     }
