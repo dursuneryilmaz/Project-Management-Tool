@@ -2,7 +2,7 @@ package com.dursuneryilmaz.dupmtool.web;
 
 import com.dursuneryilmaz.dupmtool.domain.Project;
 import com.dursuneryilmaz.dupmtool.service.ProjectService;
-import com.dursuneryilmaz.dupmtool.service.ValidationService;
+import com.dursuneryilmaz.dupmtool.service.RequestValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
     @Autowired
-    ValidationService validationService;
+    RequestValidationService requestValidationService;
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult bindingResult) {
-        ResponseEntity<?> errorMap = validationService.mapValidationErrors(bindingResult);
+        ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
-        project = projectService.saveOrUpdate(project);
-        return new ResponseEntity<Project>(project, HttpStatus.CREATED);
+        project.setProjectCode(project.getProjectCode().toUpperCase());
+        return new ResponseEntity<Project>(projectService.saveOrUpdate(project), HttpStatus.CREATED);
     }
 }
