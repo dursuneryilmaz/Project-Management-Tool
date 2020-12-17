@@ -1,6 +1,10 @@
 package com.dursuneryilmaz.dupmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -9,13 +13,21 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank(message = "Project name cannot be blank!")
     private String projectName;
+    @NotBlank(message = "Project name cannot be blank!")
+    @Size(min = 3, max = 8, message = "Please user 3 to 8 characters!")
+    @Column(updatable = false)
     private String projectCode;
+    @NotBlank(message = "Project name cannot be blank!")
     private String description;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date endDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date updatedAt;
 
     public Project() {
