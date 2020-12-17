@@ -1,6 +1,7 @@
 package com.dursuneryilmaz.dupmtool.service.impl;
 
 import com.dursuneryilmaz.dupmtool.domain.Project;
+import com.dursuneryilmaz.dupmtool.exception.ProjectCodeException;
 import com.dursuneryilmaz.dupmtool.repository.ProjectRepository;
 import com.dursuneryilmaz.dupmtool.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project saveOrUpdate(Project project) {
-        // logic
+        // logic: getProject with projectCode and userId then throw exception
+        /*
+        if (projectRepository.findByProjectCodeAndUserId(project.getProjectCode(), project.getUser.getUserId != null))
+            throw new ProjectCodeException("Project Code Already Exist");
+
+        */
         return projectRepository.save(project);
+
     }
 }
