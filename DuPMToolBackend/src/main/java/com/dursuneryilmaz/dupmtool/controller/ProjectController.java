@@ -1,4 +1,4 @@
-package com.dursuneryilmaz.dupmtool.web;
+package com.dursuneryilmaz.dupmtool.controller;
 
 import com.dursuneryilmaz.dupmtool.domain.Project;
 import com.dursuneryilmaz.dupmtool.service.ProjectService;
@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,6 +24,16 @@ public class ProjectController {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
         project.setProjectCode(project.getProjectCode().toUpperCase());
-        return new ResponseEntity<Project>(projectService.saveOrUpdate(project), HttpStatus.CREATED);
+        return new ResponseEntity<Project>(projectService.createProject(project), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public Iterable<Project> getAllProjects() {
+        return projectService.findAll();
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<?> getProjectById(@PathVariable int projectId) {
+        return new ResponseEntity<>(projectService.findProjectById(projectId), HttpStatus.OK);
     }
 }
