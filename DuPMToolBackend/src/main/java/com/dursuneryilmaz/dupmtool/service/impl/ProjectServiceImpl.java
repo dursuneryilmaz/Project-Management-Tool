@@ -13,14 +13,30 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
 
     @Override
-    public Project saveOrUpdate(Project project) {
-        // logic: getProject with projectCode and userId then throw exception
-        /*
-        if (projectRepository.findByProjectCodeAndUserId(project.getProjectCode(), project.getUser.getUserId != null))
+    public Project createProject(Project project) {
+        if (projectRepository.findByProjectCode(project.getProjectCode()) != null)
             throw new ProjectCodeException("Project Code Already Exist");
-
-        */
         return projectRepository.save(project);
+    }
 
+    @Override
+    public Project findProjectByProjectCode(String projectCode) {
+        Project project = projectRepository.findByProjectCode(projectCode);
+        if (project != null) return project;
+        throw new ProjectCodeException("Project Does Not Exist With Provided Project Code");
+    }
+
+    @Override
+    public Project findProjectById(int projectId) {
+        Project project = projectRepository.findById(projectId);
+        if (project != null) return project;
+        throw new ProjectCodeException("Project Does Not Exist With Provided project Id");
+    }
+
+    @Override
+    public Iterable<Project> findAllProjects() {
+        Iterable<Project> projects = projectRepository.findAll();
+        if (projects != null) return projects;
+        throw new ProjectCodeException("There is no Project Yet");
     }
 }
