@@ -1,4 +1,4 @@
-package com.dursuneryilmaz.dupmtool.service;
+package com.dursuneryilmaz.duscrumtool.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

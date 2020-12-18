@@ -1,13 +1,13 @@
-package com.dursuneryilmaz.dupmtool;
+package com.dursuneryilmaz.duscrumtool;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DupmtoolApplicationTests {
+class DuscrumtoolApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }

@@ -1,41 +1,50 @@
-package com.dursuneryilmaz.dupmtool.domain;
+package com.dursuneryilmaz.duscrumtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "projects")
-public class Project {
+@Table(name = "products")
+public class Product implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+    @Column(unique = true)
+    @Size(min = 32, max = 32)
+    private String publicId;
     @NotBlank(message = "Project name cannot be blank!")
     private String projectName;
-    @NotBlank(message = "Project code cannot be blank!")
-    @Size(min = 3, max = 8, message = "Please use 3 to 8 characters!")
-    @Column(updatable = false)
-    private String projectCode;
     @NotBlank(message = "Project description cannot be blank!")
     private String description;
+    private Double cost;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date createDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date endDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
-    private Date createdAt;
-    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date updatedAt;
+    /*
+    private ProductBacklog backlog;
+    private List<ProductOwner> owners;
+    private List<Theme> themeList;
+    private List<Sprint> sprintList;
+    */
 
-    public Project() {
+    public Product() {
     }
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = new Date();
+        this.createDate = new Date();
     }
 
     @PreUpdate
@@ -43,12 +52,20 @@ public class Project {
         this.updatedAt = new Date();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
     }
 
     public String getProjectName() {
@@ -59,20 +76,28 @@ public class Project {
         this.projectName = projectName;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getStartDate() {
@@ -89,14 +114,6 @@ public class Project {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Date getUpdatedAt() {

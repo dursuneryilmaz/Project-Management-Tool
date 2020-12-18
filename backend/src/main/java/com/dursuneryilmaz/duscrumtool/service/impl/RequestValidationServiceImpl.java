@@ -1,6 +1,6 @@
-package com.dursuneryilmaz.dupmtool.service.impl;
+package com.dursuneryilmaz.duscrumtool.service.impl;
 
-import com.dursuneryilmaz.dupmtool.service.RequestValidationService;
+import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

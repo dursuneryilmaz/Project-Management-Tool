@@ -1,6 +1,6 @@
-package com.dursuneryilmaz.dupmtool.exception;
+package com.dursuneryilmaz.duscrumtool.exception;
 
-import com.dursuneryilmaz.dupmtool.model.response.ProjectCodeExceptionModel;
+import com.dursuneryilmaz.duscrumtool.model.response.ProjectCodeExceptionModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

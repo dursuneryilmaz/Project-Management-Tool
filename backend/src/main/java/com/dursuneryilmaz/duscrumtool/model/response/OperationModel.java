@@ -1,4 +1,4 @@
-package com.dursuneryilmaz.dupmtool.model.response;
+package com.dursuneryilmaz.duscrumtool.model.response;
 
 public class OperationModel {
     private String operationName;
