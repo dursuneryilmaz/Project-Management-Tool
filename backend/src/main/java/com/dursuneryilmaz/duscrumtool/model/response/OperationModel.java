@@ -1,6 +1,13 @@
 package com.dursuneryilmaz.duscrumtool.model.response;
 
-public class OperationModel {
+import java.io.Serializable;
+
+public class OperationModel implements Serializable {
+    
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4945682223184857512L;
     private String operationName;
     private String operationStatus;
 

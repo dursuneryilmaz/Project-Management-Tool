@@ -1,6 +1,12 @@
 package com.dursuneryilmaz.duscrumtool.model.response;
 
-public class ProjectCodeExceptionModel {
+import java.io.Serializable;
+
+public class ProjectCodeExceptionModel  implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 7181587494265238526L;
     private String projectCode;
 
     public ProjectCodeExceptionModel(String projectCode) {
