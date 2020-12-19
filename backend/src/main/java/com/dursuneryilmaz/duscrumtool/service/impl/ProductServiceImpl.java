@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    private final String PROJECT_DOES_NOT_EXIST = "Project Does Not Exist With Provided Project Code";
+
     @Autowired
     ProductRepository productRepository;
     @Autowired
@@ -26,13 +29,13 @@ public class ProductServiceImpl implements ProductService {
     public Product findProductById(String productId) {
         Product product = productRepository.findByPublicId(productId);
         if (product != null) return product;
-        throw new ProjectCodeException("Project Does Not Exist With Provided Project Code");
+        throw new ProjectCodeException(PROJECT_DOES_NOT_EXIST);
     }
 
     @Override
     public Iterable<Product> findAllProducts() {
         Iterable<Product> projects = productRepository.findAll();
-        if (projects != null) return projects;
+        if (projects.iterator().hasNext()) return projects;
         throw new ProjectCodeException("There is no Project Yet");
     }
 
@@ -40,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     public Product updateProductById(String productId, Product product) {
         Product productToUpdate = productRepository.findByPublicId(productId);
         if (productToUpdate == null)
-            throw new ProjectCodeException("Project Does Not Exist With Provided Project Code");
+            throw new ProjectCodeException(PROJECT_DOES_NOT_EXIST);
         // check later entity updatable false
         BeanUtils.copyProperties(product, productToUpdate);
         return productRepository.save(productToUpdate);
@@ -49,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean deleteProductById(String productId) {
         Product product = productRepository.findByPublicId(productId);
-        if (product == null) throw new ProjectCodeException("Project Does Not Exist With Provided Project Code");
+        if (product == null) throw new ProjectCodeException(PROJECT_DOES_NOT_EXIST);
         productRepository.delete(product);
         return true;
     }
