@@ -21,6 +21,7 @@ public class Epic implements Serializable {
     private String epicId;
     @NotBlank(message = "Epic content can not be blank!")
     private String content;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "theme_id")
     private Theme theme;

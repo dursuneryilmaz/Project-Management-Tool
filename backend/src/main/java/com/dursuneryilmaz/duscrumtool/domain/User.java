@@ -1,6 +1,7 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -18,13 +19,14 @@ public class User implements Serializable {
     @Column(unique = true, nullable = false)
     @Size(min = 32, max = 32)
     private String userId;
-    @NotBlank(message = "Project name cannot be blank!")
+    @NotBlank(message = "First name cannot be blank!")
     @Size(min = 2, max = 45)
     private String firstName;
-    @NotBlank(message = "Project name cannot be blank!")
+    @NotBlank(message = "Last name cannot be blank!")
     @Size(min = 2, max = 45)
     private String lastName;
-    @NotBlank(message = "Project name cannot be blank!")
+    @Email
+    @NotBlank(message = "Email cannot be blank!")
     private String email;
     @Column(nullable = false)
     private String encryptedPassword;

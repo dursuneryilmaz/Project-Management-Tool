@@ -1,5 +1,7 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,14 +21,18 @@ public class Task implements Serializable {
     private String taskId;
     @NotBlank(message = "Task content can not be blank!")
     private String content;
-    @ManyToOne
-    @JoinColumn(name = "story_id")
-    private Story story;
-    @NotBlank(message = "Task content can not be blank!")
+    @NotBlank(message = "Task status can not be blank!")
     private String status;
     private Integer priority;
     private Date dueDate;
-    private String userId;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "story_id")
+    private Story story;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "product_backlog_id")
+    ProductBacklog productBacklog;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User attendant;
@@ -88,14 +94,6 @@ public class Task implements Serializable {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public User getAttendant() {

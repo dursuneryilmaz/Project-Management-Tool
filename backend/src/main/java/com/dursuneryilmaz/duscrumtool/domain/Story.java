@@ -21,6 +21,7 @@ public class Story implements Serializable {
     private String storyId;
     @NotBlank(message = "Story content can not be blank!")
     private String content;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "epic_id")
     private Epic epic;

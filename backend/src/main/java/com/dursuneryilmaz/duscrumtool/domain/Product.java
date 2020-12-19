@@ -35,11 +35,12 @@ public class Product implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date updatedAt;
     @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Theme> themeList;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProductBacklog productBacklog;
 
     /*
-    private ProductBacklog backlog;
     private List<ProductOwner> owners;
     private List<Sprint> sprintList;
     */

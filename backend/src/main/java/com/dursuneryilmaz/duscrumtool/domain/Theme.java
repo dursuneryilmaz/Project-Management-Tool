@@ -21,6 +21,7 @@ public class Theme implements Serializable {
     private String themeId;
     @NotBlank(message = "Theme content can not be blank!")
     private String content;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
