@@ -1,12 +1,14 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -16,9 +18,9 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     @Size(min = 32, max = 32)
-    private String publicId;
+    private String productId;
     @NotBlank(message = "Project name cannot be blank!")
     private String projectName;
     @NotBlank(message = "Project description cannot be blank!")
@@ -32,10 +34,13 @@ public class Product implements Serializable {
     private Date endDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date updatedAt;
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Theme> themeList;
+
     /*
     private ProductBacklog backlog;
     private List<ProductOwner> owners;
-    private List<Theme> themeList;
     private List<Sprint> sprintList;
     */
 
@@ -60,12 +65,12 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getPublicId() {
-        return publicId;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getProjectName() {
@@ -122,5 +127,13 @@ public class Product implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Theme> getThemeList() {
+        return themeList;
+    }
+
+    public void setThemeList(List<Theme> themeList) {
+        this.themeList = themeList;
     }
 }

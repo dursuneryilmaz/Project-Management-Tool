@@ -18,7 +18,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
-        product.setPublicId(utils.generatePublicId(32));
+        product.setProductId(utils.generatePublicId(32));
         return productRepository.save(product);
     }
 
