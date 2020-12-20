@@ -1,10 +1,12 @@
 package com.dursuneryilmaz.duscrumtool.controller;
 
 import com.dursuneryilmaz.duscrumtool.domain.Product;
+import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
 import com.dursuneryilmaz.duscrumtool.domain.Theme;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationModel;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationName;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationStatus;
+import com.dursuneryilmaz.duscrumtool.service.ProductBacklogService;
 import com.dursuneryilmaz.duscrumtool.service.ProductService;
 import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
 import com.dursuneryilmaz.duscrumtool.service.ThemeService;
@@ -25,6 +27,8 @@ public class ProductController {
     @Autowired
     ThemeService themeService;
     @Autowired
+    ProductBacklogService productBacklogService;
+    @Autowired
     RequestValidationService requestValidationService;
 
     @PostMapping
@@ -35,13 +39,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public Iterable<Product> getAllProducts() {
-        return productService.findAllProducts();
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     @GetMapping(path = "/{productId}")
     public ResponseEntity<Product> getProductByProductId(@PathVariable String productId) {
-        return new ResponseEntity<Product>(productService.findProductById(productId), HttpStatus.OK);
+        return new ResponseEntity<Product>(productService.getProductById(productId), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{productId}")
@@ -66,12 +70,19 @@ public class ProductController {
 
     @GetMapping(path = "/{productId}/themes")
     public ResponseEntity<List<Theme>> getProductThemes(@PathVariable String productId) {
-        Product product = productService.findProductById(productId);
-        return new ResponseEntity<List<Theme>>(themeService.findAllByProduct(product), HttpStatus.OK);
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<Theme>>(themeService.getAllByProduct(product), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{productId}/themes/{themeId}")
     public ResponseEntity<Theme> getProductTheme(@PathVariable String productId, @PathVariable String themeId) {
-        return new ResponseEntity<Theme>(themeService.findByThemeId(themeId), HttpStatus.OK);
+        return new ResponseEntity<Theme>(themeService.getByThemeId(themeId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{productId}/backlog")
+    public ResponseEntity<ProductBacklog> getProductBacklog(@PathVariable String productId) {
+        Product product = productService.getProductById(productId);
+        System.out.println(product.getId());
+        return new ResponseEntity<ProductBacklog>(productBacklogService.getByProduct(product), HttpStatus.OK);
     }
 }
