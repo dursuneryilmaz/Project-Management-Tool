@@ -41,7 +41,7 @@ public class Product implements Serializable {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProductBacklog productBacklog;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "products_owners",
             joinColumns = @JoinColumn(name = "product_id"),
