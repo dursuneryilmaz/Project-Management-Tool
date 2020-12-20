@@ -1,9 +1,9 @@
 package com.dursuneryilmaz.duscrumtool.model.response;
 
-public class ProjectCodeExceptionModel {
+public class ProductIdExceptionModel {
     private String projectCode;
 
-    public ProjectCodeExceptionModel(String projectCode) {
+    public ProductIdExceptionModel(String projectCode) {
         this.projectCode = projectCode;
     }
 

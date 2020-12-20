@@ -1,6 +1,6 @@
 package com.dursuneryilmaz.duscrumtool.exception;
 
-import com.dursuneryilmaz.duscrumtool.model.response.ProjectCodeExceptionModel;
+import com.dursuneryilmaz.duscrumtool.model.response.ProductIdExceptionModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +11,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 public class AppResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = {ProjectCodeException.class})
-    public ResponseEntity<Object> handleUserServiceException(ProjectCodeException ex, WebRequest request) {
-        ProjectCodeExceptionModel projectCodeExceptionModel = new ProjectCodeExceptionModel(ex.getMessage());
-        return new ResponseEntity(projectCodeExceptionModel, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(value = {ProductIdException.class})
+    public ResponseEntity<Object> handleUserServiceException(ProductIdException ex, WebRequest request) {
+        ProductIdExceptionModel productIdExceptionModel = new ProductIdExceptionModel(ex.getMessage());
+        return new ResponseEntity(productIdExceptionModel, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
