@@ -6,6 +6,7 @@ import com.dursuneryilmaz.duscrumtool.domain.Theme;
 import java.util.List;
 
 public interface ThemeService {
-    List<Theme> findAllByProduct(Product product);
-    Theme findByThemeId(String themeId);
+    Theme createTheme(Theme theme, Product product);
+    List<Theme> getAllByProduct(Product product);
+    Theme getByThemeId(String themeId);
 }
