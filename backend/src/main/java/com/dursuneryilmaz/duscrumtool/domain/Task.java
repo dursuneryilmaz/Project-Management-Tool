@@ -33,6 +33,10 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_backlog_id")
     ProductBacklog productBacklog;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "sprint_backlog_id")
+    SprintBacklog sprintBacklog;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User attendant;
@@ -102,5 +106,21 @@ public class Task implements Serializable {
 
     public void setAttendant(User attendant) {
         this.attendant = attendant;
+    }
+
+    public ProductBacklog getProductBacklog() {
+        return productBacklog;
+    }
+
+    public void setProductBacklog(ProductBacklog productBacklog) {
+        this.productBacklog = productBacklog;
+    }
+
+    public SprintBacklog getSprintBacklog() {
+        return sprintBacklog;
+    }
+
+    public void setSprintBacklog(SprintBacklog sprintBacklog) {
+        this.sprintBacklog = sprintBacklog;
     }
 }
