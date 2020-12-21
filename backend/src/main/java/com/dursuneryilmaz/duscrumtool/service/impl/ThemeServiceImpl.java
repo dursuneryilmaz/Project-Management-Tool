@@ -4,10 +4,10 @@ import com.dursuneryilmaz.duscrumtool.domain.Product;
 import com.dursuneryilmaz.duscrumtool.domain.Theme;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
 import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
-import com.dursuneryilmaz.duscrumtool.repository.ProductRepository;
 import com.dursuneryilmaz.duscrumtool.repository.ThemeRepository;
 import com.dursuneryilmaz.duscrumtool.service.ThemeService;
 import com.dursuneryilmaz.duscrumtool.shared.Utils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,11 @@ public class ThemeServiceImpl implements ThemeService {
     }
 
     @Override
+    public Theme getThemeById(String themeId) {
+        return checkThemeExistenceById(themeId);
+    }
+
+    @Override
     public List<Theme> getAllByProduct(Product product) {
         List<Theme> themeList = themeRepository.findAllByProduct(product);
         if (themeList.size() == 0)
@@ -36,7 +41,21 @@ public class ThemeServiceImpl implements ThemeService {
     }
 
     @Override
-    public Theme getByThemeId(String themeId) {
+    public Theme updateThemeById(String themeId, Theme theme) {
+        Theme themeToUpdate = checkThemeExistenceById(themeId);
+        // check later entity updatable false
+        BeanUtils.copyProperties(theme, themeToUpdate);
+        return themeRepository.save(themeToUpdate);
+    }
+
+    @Override
+    public Boolean deleteThemeById(String themeId) {
+        Theme theme = checkThemeExistenceById(themeId);
+        themeRepository.delete(theme);
+        return true;
+    }
+
+    private Theme checkThemeExistenceById(String themeId) {
         Theme theme = themeRepository.findByThemeId(themeId);
         if (theme == null) throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
         return theme;

@@ -7,6 +7,12 @@ import java.util.List;
 
 public interface ThemeService {
     Theme createTheme(Theme theme, Product product);
+
+    Theme getThemeById(String themeId);
+
     List<Theme> getAllByProduct(Product product);
-    Theme getByThemeId(String themeId);
+
+    Theme updateThemeById(String themeId, Theme theme);
+
+    Boolean deleteThemeById(String themeId);
 }
