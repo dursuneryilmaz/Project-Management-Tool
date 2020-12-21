@@ -6,7 +6,11 @@ import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
 public interface ProductBacklogService {
     ProductBacklog createProductBacklog(ProductBacklog productBacklog, Product product);
 
+    ProductBacklog getProductBacklogById(String productBacklogId);
+
     ProductBacklog getByProduct(Product product);
 
-    ProductBacklog getByProductBacklogId(String productBacklogId);
+    ProductBacklog updateProductBacklogById(String backlogId, ProductBacklog productBacklog);
+
+    Boolean deleteProductBacklogById(String productBacklogId);
 }
