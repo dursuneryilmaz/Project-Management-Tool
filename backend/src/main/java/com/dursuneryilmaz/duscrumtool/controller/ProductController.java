@@ -76,7 +76,7 @@ public class ProductController {
 
     @GetMapping(path = "/{productId}/themes/{themeId}")
     public ResponseEntity<Theme> getProductTheme(@PathVariable String productId, @PathVariable String themeId) {
-        return new ResponseEntity<Theme>(themeService.getByThemeId(themeId), HttpStatus.OK);
+        return new ResponseEntity<Theme>(themeService.getThemeById(themeId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{productId}/backlog")
