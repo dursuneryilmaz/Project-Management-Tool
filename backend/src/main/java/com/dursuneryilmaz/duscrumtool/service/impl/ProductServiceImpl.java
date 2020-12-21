@@ -28,9 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(String productId) {
-        Product product = productRepository.findByProductId(productId);
-        if (product != null) return product;
-        throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
+        return checkProductExistenceById(productId);
     }
 
     @Override
@@ -42,19 +40,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProductById(String productId, Product product) {
-        Product productToUpdate = productRepository.findByProductId(productId);
-        if (productToUpdate == null)
-            throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
-        // check later entity updatable false
+        Product productToUpdate = checkProductExistenceById(productId);
         BeanUtils.copyProperties(product, productToUpdate);
         return productRepository.save(productToUpdate);
     }
 
     @Override
     public Boolean deleteProductById(String productId) {
-        Product product = productRepository.findByProductId(productId);
-        if (product == null) throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
+        Product product = checkProductExistenceById(productId);
         productRepository.delete(product);
         return true;
+    }
+
+    private Product checkProductExistenceById(String productId) {
+        Product product = productRepository.findByProductId(productId);
+        if (product == null) throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
+        return product;
     }
 }
