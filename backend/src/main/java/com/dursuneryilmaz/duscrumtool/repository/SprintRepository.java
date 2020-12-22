@@ -5,9 +5,11 @@ import com.dursuneryilmaz.duscrumtool.domain.Sprint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SprintRepository extends JpaRepository<Sprint, Long> {
-    Sprint findByProduct(Product product);
+    List<Sprint> findAllByProduct(Product product);
 
     Sprint findBySprintId(String sprintId);
 }
