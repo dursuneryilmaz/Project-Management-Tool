@@ -1,5 +1,6 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.Date;
 @Table(name = "sprints")
 public class Sprint implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +28,23 @@ public class Sprint implements Serializable {
     private SprintBacklog sprintBacklog;
     private Date startDate;
     private Date endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date updateDate;
+
+    public Sprint() {
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateDate = new Date();
+    }
 
     public Long getId() {
         return id;
@@ -74,5 +92,21 @@ public class Sprint implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

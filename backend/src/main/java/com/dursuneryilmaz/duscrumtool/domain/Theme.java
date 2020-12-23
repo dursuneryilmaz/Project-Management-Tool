@@ -1,11 +1,13 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,8 +30,23 @@ public class Theme implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Epic> epicList;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date updateDate;
 
     public Theme() {
+    }
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateDate = new Date();
     }
 
     public Long getId() {
@@ -70,5 +87,21 @@ public class Theme implements Serializable {
 
     public void setEpicList(List<Epic> epicList) {
         this.epicList = epicList;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

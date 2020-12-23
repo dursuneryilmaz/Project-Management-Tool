@@ -1,9 +1,11 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,6 +23,23 @@ public class SprintBacklog implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "sprintBacklog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Task> taskList;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date updateDate;
+
+    public SprintBacklog() {
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateDate = new Date();
+    }
 
     public Long getId() {
         return id;
@@ -52,6 +71,22 @@ public class SprintBacklog implements Serializable {
 
     public void setTaskList(List<Task> taskList) {
         this.taskList = taskList;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
 

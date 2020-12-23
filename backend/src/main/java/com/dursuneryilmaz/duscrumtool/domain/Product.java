@@ -34,7 +34,7 @@ public class Product implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date endDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
-    private Date updatedAt;
+    private Date updateDate;
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Theme> themeList;
@@ -63,7 +63,7 @@ public class Product implements Serializable {
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = new Date();
+        this.updateDate = new Date();
     }
 
     public Long getId() {
@@ -130,12 +130,12 @@ public class Product implements Serializable {
         this.endDate = endDate;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdateDate(Date updatedAt) {
+        this.updateDate = updatedAt;
     }
 
     public List<Theme> getThemeList() {

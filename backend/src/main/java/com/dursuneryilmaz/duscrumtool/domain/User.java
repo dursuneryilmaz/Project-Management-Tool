@@ -1,10 +1,13 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,8 +44,22 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roleSet = new HashSet<>();
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date updateDate;
 
     public User() {
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateDate = new Date();
     }
 
     public Long getId() {
@@ -115,5 +132,21 @@ public class User implements Serializable {
 
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

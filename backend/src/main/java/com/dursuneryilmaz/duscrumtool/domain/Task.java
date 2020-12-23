@@ -1,5 +1,6 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -40,8 +41,22 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User attendant;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
+    private Date updateDate;
 
     public Task() {
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateDate = new Date();
     }
 
     public Long getId() {
@@ -122,5 +137,21 @@ public class Task implements Serializable {
 
     public void setSprintBacklog(SprintBacklog sprintBacklog) {
         this.sprintBacklog = sprintBacklog;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
