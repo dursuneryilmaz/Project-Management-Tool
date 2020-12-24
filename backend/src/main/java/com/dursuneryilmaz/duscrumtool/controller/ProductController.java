@@ -2,14 +2,13 @@ package com.dursuneryilmaz.duscrumtool.controller;
 
 import com.dursuneryilmaz.duscrumtool.domain.Product;
 import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
+import com.dursuneryilmaz.duscrumtool.domain.Sprint;
 import com.dursuneryilmaz.duscrumtool.domain.Theme;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationModel;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationName;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationStatus;
-import com.dursuneryilmaz.duscrumtool.service.ProductBacklogService;
-import com.dursuneryilmaz.duscrumtool.service.ProductService;
-import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
-import com.dursuneryilmaz.duscrumtool.service.ThemeService;
+import com.dursuneryilmaz.duscrumtool.service.*;
+import com.dursuneryilmaz.duscrumtool.shared.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +28,21 @@ public class ProductController {
     @Autowired
     ProductBacklogService productBacklogService;
     @Autowired
+    SprintService sprintService;
+    @Autowired
     RequestValidationService requestValidationService;
+    @Autowired
+    Utils utils;
 
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
+        // initialize product backlog before product creation
+        ProductBacklog productBacklog = new ProductBacklog();
+        productBacklog.setProduct(product);
+        productBacklog.setProductBacklogId(utils.generatePublicId(32));
+        product.setProductBacklog(productBacklog);
         return new ResponseEntity<Product>(productService.createProduct(product), HttpStatus.CREATED);
     }
 
@@ -82,7 +90,16 @@ public class ProductController {
     @GetMapping(path = "/{productId}/backlog")
     public ResponseEntity<ProductBacklog> getProductBacklog(@PathVariable String productId) {
         Product product = productService.getProductById(productId);
-        System.out.println(product.getId());
         return new ResponseEntity<ProductBacklog>(productBacklogService.getByProduct(product), HttpStatus.OK);
     }
+
+    @GetMapping(path = "/{productId}/sprints")
+    public ResponseEntity<List<Sprint>> getProductSprints(@PathVariable String productId) {
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<Sprint>>(sprintService.getAllByProduct(product), HttpStatus.OK);
+    }
+
+    // get stake holders
+    // get scrum managers
+    // get scrum devs
 }
