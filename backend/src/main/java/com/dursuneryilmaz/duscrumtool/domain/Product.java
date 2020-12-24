@@ -1,10 +1,10 @@
 package com.dursuneryilmaz.duscrumtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,10 +22,11 @@ public class Product implements Serializable {
     @Column(unique = true, nullable = false)
     @Size(min = 32, max = 32)
     private String productId;
-    @NotBlank(message = "Project name cannot be blank!")
+    @NotBlank(message = "Product name cannot be blank!")
     private String projectName;
-    @NotBlank(message = "Project description cannot be blank!")
+    @NotBlank(message = "Product description cannot be blank!")
     private String description;
+    @NotNull(message = "Product cost can not be null!")
     private Double cost;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date createDate;
@@ -35,9 +36,9 @@ public class Product implements Serializable {
     private Date endDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date updateDate;
-    @JsonIgnore
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Theme> themeList;
+    private List<Theme> themeList = new ArrayList<>();
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProductBacklog productBacklog;
 
@@ -50,8 +51,7 @@ public class Product implements Serializable {
     private List<User> owners = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Sprint> sprintList;
-
+    private List<Sprint> sprintList = new ArrayList<>();
 
     public Product() {
     }
