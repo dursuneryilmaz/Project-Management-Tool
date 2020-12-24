@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,14 +25,12 @@ public class ProductBacklog implements Serializable {
     @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
-    @JsonIgnore
     @OneToMany(mappedBy = "productBacklog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Task> taskList;
+    private List<Task> taskList = new ArrayList<>();
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date createDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date updateDate;
-
 
     public ProductBacklog() {
     }
