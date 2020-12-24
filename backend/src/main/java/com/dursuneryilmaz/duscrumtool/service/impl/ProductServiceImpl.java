@@ -6,7 +6,6 @@ import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.ProductRepository;
 import com.dursuneryilmaz.duscrumtool.service.ProductService;
 import com.dursuneryilmaz.duscrumtool.shared.Utils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProductById(String productId, Product product) {
         Product productToUpdate = checkProductExistenceById(productId);
-        BeanUtils.copyProperties(product, productToUpdate);
+        // update selected properties which are required
+        productToUpdate.setProjectName(product.getProjectName());
+        productToUpdate.setDescription(product.getDescription());
+        productToUpdate.setCost(product.getCost());
         return productRepository.save(productToUpdate);
     }
 
