@@ -1,6 +1,7 @@
 package com.dursuneryilmaz.duscrumtool.service;
 
 import com.dursuneryilmaz.duscrumtool.domain.Product;
+import com.dursuneryilmaz.duscrumtool.domain.User;
 
 import java.util.List;
 
@@ -14,4 +15,10 @@ public interface ProductService {
     Product updateProductById(String productId, Product product);
 
     Boolean deleteProductById(String productId);
+
+    List<User> getProductStakeHolders(Product product);
+
+    List<User> getProductScrumManagers(Product product);
+
+    List<User> getProductDevelopers(Product product);
 }

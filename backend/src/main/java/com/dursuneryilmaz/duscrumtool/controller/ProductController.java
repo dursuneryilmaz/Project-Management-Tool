@@ -1,9 +1,6 @@
 package com.dursuneryilmaz.duscrumtool.controller;
 
-import com.dursuneryilmaz.duscrumtool.domain.Product;
-import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
-import com.dursuneryilmaz.duscrumtool.domain.Sprint;
-import com.dursuneryilmaz.duscrumtool.domain.Theme;
+import com.dursuneryilmaz.duscrumtool.domain.*;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationModel;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationName;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationStatus;
@@ -100,6 +97,24 @@ public class ProductController {
     }
 
     // get stake holders
+    @GetMapping(path = "/{productId}/stake-holders")
+    public ResponseEntity<List<User>> getProductStakeHolders(@PathVariable String productId) {
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<User>>(productService.getProductStakeHolders(product), HttpStatus.OK);
+    }
+
     // get scrum managers
+    @GetMapping(path = "/{productId}/scrum-managers")
+    public ResponseEntity<List<User>> getProductScrumManagers(@PathVariable String productId) {
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<User>>(productService.getProductScrumManagers(product), HttpStatus.OK);
+    }
+
     // get scrum devs
+    @GetMapping(path = "/{productId}/developers")
+    public ResponseEntity<List<User>> getProductDevelopers(@PathVariable String productId) {
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<User>>(productService.getProductDevelopers(product), HttpStatus.OK);
+    }
+
 }

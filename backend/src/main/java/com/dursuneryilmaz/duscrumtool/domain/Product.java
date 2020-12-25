@@ -44,11 +44,29 @@ public class Product implements Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "products_owners",
+            name = "products_stake_holders",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> owners = new ArrayList<>();
+
+    private List<User> stakeHolderList = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "products_managers",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> scrumManagerList = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "products_devs",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> productDeveloperList = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sprint> sprintList = new ArrayList<>();
@@ -154,12 +172,20 @@ public class Product implements Serializable {
         this.productBacklog = productBacklog;
     }
 
-    public List<User> getOwners() {
-        return owners;
+    public List<User> getStakeHolderList() {
+        return stakeHolderList;
     }
 
-    public void setOwners(List<User> owners) {
-        this.owners = owners;
+    public void setStakeHolderList(List<User> stakeHolderList) {
+        this.stakeHolderList = stakeHolderList;
+    }
+
+    public List<User> getScrumManagerList() {
+        return scrumManagerList;
+    }
+
+    public void setScrumManagerList(List<User> scrumManagerList) {
+        this.scrumManagerList = scrumManagerList;
     }
 
     public List<Sprint> getSprintList() {
@@ -168,5 +194,13 @@ public class Product implements Serializable {
 
     public void setSprintList(List<Sprint> sprintList) {
         this.sprintList = sprintList;
+    }
+
+    public List<User> getProductDeveloperList() {
+        return productDeveloperList;
+    }
+
+    public void setProductDeveloperList(List<User> productDevList) {
+        this.productDeveloperList = productDevList;
     }
 }

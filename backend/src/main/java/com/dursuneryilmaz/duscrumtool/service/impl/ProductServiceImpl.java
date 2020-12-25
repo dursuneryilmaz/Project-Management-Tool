@@ -1,6 +1,7 @@
 package com.dursuneryilmaz.duscrumtool.service.impl;
 
 import com.dursuneryilmaz.duscrumtool.domain.Product;
+import com.dursuneryilmaz.duscrumtool.domain.User;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
 import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.ProductRepository;
@@ -58,5 +59,23 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findByProductId(productId);
         if (product == null) throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
         return product;
+    }
+
+    @Override
+    public List<User> getProductStakeHolders(Product product) {
+        if (product.getStakeHolderList().size() != 0) return product.getStakeHolderList();
+        throw new ProductIdException(ExceptionMessages.NO_STAKE_HOLDER.getExceptionMessage());
+    }
+
+    @Override
+    public List<User> getProductScrumManagers(Product product) {
+        if (product.getScrumManagerList().size() != 0) return product.getScrumManagerList();
+        throw new ProductIdException(ExceptionMessages.NO_SCRUM_MANAGER.getExceptionMessage());
+    }
+
+    @Override
+    public List<User> getProductDevelopers(Product product) {
+        if (product.getProductDeveloperList().size() != 0) return product.getProductDeveloperList();
+        throw new ProductIdException(ExceptionMessages.NO_WORKING_DEVELOPER.getExceptionMessage());
     }
 }
