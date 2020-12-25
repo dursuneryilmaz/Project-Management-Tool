@@ -21,4 +21,10 @@ public interface ProductService {
     List<User> getProductScrumManagers(Product product);
 
     List<User> getProductDevelopers(Product product);
+
+    List<User>  addProductStakeHolder(Product product, User user);
+
+    List<User> addProductScrumManager(Product product, User user);
+
+    List<User> addProductDeveloper(Product product, User user);
 }

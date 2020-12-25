@@ -78,4 +78,24 @@ public class ProductServiceImpl implements ProductService {
         if (product.getProductDeveloperList().size() != 0) return product.getProductDeveloperList();
         throw new ProductIdException(ExceptionMessages.NO_WORKING_DEVELOPER.getExceptionMessage());
     }
+
+    @Override
+    public List<User> addProductStakeHolder(Product product, User user) {
+        product.getStakeHolderList().add(user);
+        return productRepository.save(product).getStakeHolderList();
+
+    }
+
+    @Override
+    public List<User> addProductScrumManager(Product product, User user) {
+        product.getScrumManagerList().add(user);
+        return productRepository.save(product).getScrumManagerList();
+    }
+
+    @Override
+    public List<User> addProductDeveloper(Product product, User user) {
+        product.getProductDeveloperList().add(user);
+        return productRepository.save(product).getProductDeveloperList();
+
+    }
 }

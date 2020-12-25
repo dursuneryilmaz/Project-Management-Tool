@@ -31,6 +31,7 @@ public class ProductController {
     @Autowired
     Utils utils;
 
+    // create product
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
@@ -43,23 +44,27 @@ public class ProductController {
         return new ResponseEntity<Product>(productService.createProduct(product), HttpStatus.CREATED);
     }
 
+    // get all products
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
+    // get product
     @GetMapping(path = "/{productId}")
     public ResponseEntity<Product> getProductByProductId(@PathVariable String productId) {
         return new ResponseEntity<Product>(productService.getProductById(productId), HttpStatus.OK);
     }
 
+    // update product
     @PutMapping(path = "/{productId}")
-    public ResponseEntity<?> updateProduct(@PathVariable String productId, @RequestBody Product product, BindingResult bindingResult) {
+    public ResponseEntity<?> updateProduct(@PathVariable String productId, @Valid @RequestBody Product product, BindingResult bindingResult) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
         return new ResponseEntity<Product>(productService.updateProductById(productId, product), HttpStatus.OK);
     }
 
+    // delete product
     @DeleteMapping(path = "/{productId}")
     public ResponseEntity<OperationModel> deleteProductByProductId(@PathVariable String productId) {
         OperationModel operationModel = new OperationModel();
@@ -73,23 +78,21 @@ public class ProductController {
         return new ResponseEntity<>(operationModel, HttpStatus.OK);
     }
 
+    // get product themes
     @GetMapping(path = "/{productId}/themes")
     public ResponseEntity<List<Theme>> getProductThemes(@PathVariable String productId) {
         Product product = productService.getProductById(productId);
         return new ResponseEntity<List<Theme>>(themeService.getAllByProduct(product), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{productId}/themes/{themeId}")
-    public ResponseEntity<Theme> getProductTheme(@PathVariable String productId, @PathVariable String themeId) {
-        return new ResponseEntity<Theme>(themeService.getThemeById(themeId), HttpStatus.OK);
-    }
-
+    // get product backlog
     @GetMapping(path = "/{productId}/backlog")
     public ResponseEntity<ProductBacklog> getProductBacklog(@PathVariable String productId) {
         Product product = productService.getProductById(productId);
         return new ResponseEntity<ProductBacklog>(productBacklogService.getByProduct(product), HttpStatus.OK);
     }
 
+    // get product sprints
     @GetMapping(path = "/{productId}/sprints")
     public ResponseEntity<List<Sprint>> getProductSprints(@PathVariable String productId) {
         Product product = productService.getProductById(productId);
@@ -103,11 +106,29 @@ public class ProductController {
         return new ResponseEntity<List<User>>(productService.getProductStakeHolders(product), HttpStatus.OK);
     }
 
+    // add stake holder
+    @PatchMapping(path = "/{productId}/stake-holders")
+    public ResponseEntity<?> addProductStakeHolder(@PathVariable String productId, @Valid @RequestBody User user, BindingResult bindingResult) {
+        ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
+        if (errorMap != null) return errorMap;
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<User>>(productService.addProductStakeHolder(product, user), HttpStatus.OK);
+    }
+
     // get scrum managers
     @GetMapping(path = "/{productId}/scrum-managers")
     public ResponseEntity<List<User>> getProductScrumManagers(@PathVariable String productId) {
         Product product = productService.getProductById(productId);
         return new ResponseEntity<List<User>>(productService.getProductScrumManagers(product), HttpStatus.OK);
+    }
+
+    // add scrum manager
+    @PatchMapping(path = "/{productId}/scrum-managers")
+    public ResponseEntity<?> addProductScrumManager(@PathVariable String productId, @Valid @RequestBody User user, BindingResult bindingResult) {
+        ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
+        if (errorMap != null) return errorMap;
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<User>>(productService.addProductScrumManager(product, user), HttpStatus.OK);
     }
 
     // get scrum devs
@@ -117,4 +138,12 @@ public class ProductController {
         return new ResponseEntity<List<User>>(productService.getProductDevelopers(product), HttpStatus.OK);
     }
 
+    // add scrum dev
+    @PatchMapping(path = "/{productId}/developers")
+    public ResponseEntity<?> addProductDeveloper(@PathVariable String productId, @RequestBody User user, BindingResult bindingResult) {
+        ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
+        if (errorMap != null) return errorMap;
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<List<User>>(productService.addProductDeveloper(product, user), HttpStatus.OK);
+    }
 }
