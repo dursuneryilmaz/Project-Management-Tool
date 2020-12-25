@@ -24,11 +24,19 @@ public class ProductBacklogController {
     @Autowired
     RequestValidationService requestValidationService;
 
+    // create product backlog
     @PostMapping(path = "/{productId}")
-    public ResponseEntity<?> createTheme(@PathVariable String productId, @Valid @RequestBody ProductBacklog productBacklog, BindingResult bindingResult) {
+    public ResponseEntity<?> createProductBacklog(@PathVariable String productId, @Valid @RequestBody ProductBacklog productBacklog, BindingResult bindingResult) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
         Product product = productService.getProductById(productId);
         return new ResponseEntity<ProductBacklog>(productBacklogService.createProductBacklog(productBacklog, product), HttpStatus.CREATED);
+    }
+
+    // get product backlog
+    @GetMapping(path = "/{productId}")
+    public ResponseEntity<ProductBacklog> getProductBacklog(@PathVariable String productId) {
+        Product product = productService.getProductById(productId);
+        return new ResponseEntity<ProductBacklog>(productBacklogService.getByProduct(product), HttpStatus.OK);
     }
 }
