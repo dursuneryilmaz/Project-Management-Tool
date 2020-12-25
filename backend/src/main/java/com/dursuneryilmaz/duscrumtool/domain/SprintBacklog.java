@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class SprintBacklog implements Serializable {
     private Sprint sprint;
     @JsonIgnore
     @OneToMany(mappedBy = "sprintBacklog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Task> taskList;
+    private List<Task> taskList = new ArrayList<>();
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date createDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")

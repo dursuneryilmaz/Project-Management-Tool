@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Story implements Serializable {
     private Epic epic;
     @JsonIgnore
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Task> taskList;
+    private List<Task> taskList= new ArrayList<>();
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
     private Date createDate;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
