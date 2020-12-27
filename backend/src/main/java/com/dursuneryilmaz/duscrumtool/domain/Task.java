@@ -24,7 +24,8 @@ public class Task implements Serializable {
     private String content;
     @NotBlank(message = "Task status can not be blank!")
     private String status;
-    private Integer priority;
+    // default priority 3:low  2:medium 1: high
+    private Integer priority = 3;
     private Date dueDate;
     @JsonIgnore
     @ManyToOne
