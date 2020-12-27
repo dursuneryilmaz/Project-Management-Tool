@@ -20,9 +20,18 @@ public class TaskServiceImpl implements TaskService {
     Utils utils;
 
     @Override
-    public Task createTask(Task task, Story story) {
+    public Task createTaskToStory(Task task, Story story) {
         task.setTaskId(utils.generatePublicId(32));
         task.setStory(story);
+        // many db requests ?
+        task.setProductBacklog(story.getEpic().getTheme().getProduct().getProductBacklog());
+        return taskRepository.save(task);
+    }
+
+    @Override
+    public Task createTaskToProductBacklog(Task task, ProductBacklog productBacklog) {
+        task.setTaskId(utils.generatePublicId(32));
+        task.setProductBacklog(productBacklog);
         return taskRepository.save(task);
     }
 
@@ -62,6 +71,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTaskById(String taskId, Task task) {
         Task taskToUpdate = checkTaskExistenceById(taskId);
+        // ?
         BeanUtils.copyProperties(task, taskToUpdate);
         return taskRepository.save(taskToUpdate);
     }

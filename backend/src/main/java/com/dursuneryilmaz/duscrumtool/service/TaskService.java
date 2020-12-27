@@ -5,7 +5,9 @@ import com.dursuneryilmaz.duscrumtool.domain.*;
 import java.util.List;
 
 public interface TaskService {
-    Task createTask(Task task, Story story);
+    Task createTaskToStory(Task task, Story story);
+
+    Task createTaskToProductBacklog(Task task, ProductBacklog productBacklog);
 
     Task getTaskById(String taskId);
 
