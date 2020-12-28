@@ -28,7 +28,7 @@ public class ProductBacklogController {
     @Autowired
     RequestValidationService requestValidationService;
 
-    // create product backlog
+    // create product backlog -> no need ?
     @PostMapping(path = "/{productId}")
     public ResponseEntity<?> createProductBacklog(@PathVariable String productId, @Valid @RequestBody ProductBacklog productBacklog, BindingResult bindingResult) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
