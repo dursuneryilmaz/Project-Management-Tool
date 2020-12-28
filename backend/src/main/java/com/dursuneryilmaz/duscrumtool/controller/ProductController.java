@@ -36,11 +36,6 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
-        // initialize product backlog before product creation
-        ProductBacklog productBacklog = new ProductBacklog();
-        productBacklog.setProduct(product);
-        productBacklog.setProductBacklogId(utils.generatePublicId(32));
-        product.setProductBacklog(productBacklog);
         return new ResponseEntity<Product>(productService.createProduct(product), HttpStatus.CREATED);
     }
 

@@ -1,6 +1,7 @@
 package com.dursuneryilmaz.duscrumtool.service.impl;
 
 import com.dursuneryilmaz.duscrumtool.domain.Product;
+import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
 import com.dursuneryilmaz.duscrumtool.domain.User;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
 import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
@@ -22,7 +23,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
+        // instantiate and assign product backlog before product creation
+        ProductBacklog productBacklog = new ProductBacklog();
+        productBacklog.setProductBacklogId(utils.generatePublicId(32));
+        // any problem with db id of product
+        productBacklog.setProduct(product);
+
         product.setProductId(utils.generatePublicId(32));
+        product.setProductBacklog(productBacklog);
+
         return productRepository.save(product);
     }
 
