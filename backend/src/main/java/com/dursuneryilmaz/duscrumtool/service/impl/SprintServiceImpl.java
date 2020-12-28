@@ -2,6 +2,7 @@ package com.dursuneryilmaz.duscrumtool.service.impl;
 
 import com.dursuneryilmaz.duscrumtool.domain.Product;
 import com.dursuneryilmaz.duscrumtool.domain.Sprint;
+import com.dursuneryilmaz.duscrumtool.domain.SprintBacklog;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
 import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.SprintRepository;
@@ -22,7 +23,14 @@ public class SprintServiceImpl implements SprintService {
 
     @Override
     public Sprint createSprint(Sprint sprint, Product product) {
+        //instantiate and assign sprint backlog before sprint creation
+        SprintBacklog sprintBacklog = new SprintBacklog();
+        sprintBacklog.setSprintBacklogId(utils.generatePublicId(32));
+        // any problem with db id of sprint -> ?
+        sprintBacklog.setSprint(sprint);
+
         sprint.setSprintId(utils.generatePublicId(32));
+        sprint.setSprintBacklog(sprintBacklog);
         sprint.setProduct(product);
         return sprintRepository.save(sprint);
     }
