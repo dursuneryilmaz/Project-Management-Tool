@@ -21,7 +21,7 @@ public class SprintBacklog implements Serializable {
     @OneToOne
     @JoinColumn(name = "sprint_id")
     private Sprint sprint;
-    @JsonIgnore
+    // replace back later
     @OneToMany(mappedBy = "sprintBacklog", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Task> taskList = new ArrayList<>();
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")

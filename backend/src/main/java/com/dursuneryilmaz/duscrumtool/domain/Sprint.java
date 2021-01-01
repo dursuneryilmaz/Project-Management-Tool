@@ -23,7 +23,7 @@ public class Sprint implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-    @JsonIgnore
+
     @OneToOne(mappedBy = "sprint", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SprintBacklog sprintBacklog;
     private Date startDate;
