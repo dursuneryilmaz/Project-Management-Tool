@@ -3,6 +3,9 @@ package com.dursuneryilmaz.duscrumtool.controller;
 import com.dursuneryilmaz.duscrumtool.domain.Product;
 import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
 import com.dursuneryilmaz.duscrumtool.domain.Task;
+import com.dursuneryilmaz.duscrumtool.model.response.OperationModel;
+import com.dursuneryilmaz.duscrumtool.model.response.OperationName;
+import com.dursuneryilmaz.duscrumtool.model.response.OperationStatus;
 import com.dursuneryilmaz.duscrumtool.service.ProductBacklogService;
 import com.dursuneryilmaz.duscrumtool.service.ProductService;
 import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
@@ -49,5 +52,19 @@ public class ProductBacklogController {
     public ResponseEntity<List<Task>> getProductBacklogTasks(@PathVariable String productBacklogId) {
         ProductBacklog productBacklog = productBacklogService.getProductBacklogById(productBacklogId);
         return new ResponseEntity<List<Task>>(taskService.getAllByProductBacklog(productBacklog), HttpStatus.OK);
+    }
+
+    // split tasks to sprints
+    @GetMapping(path = "/{productBacklogId}/split-tasks-to-sprints")
+    public ResponseEntity<OperationModel> splitTaskToSprints(@PathVariable String productBacklogId) {
+        OperationModel operationModel = new OperationModel();
+        if (productBacklogService.splitTasksToSprints(productBacklogService.getProductBacklogById(productBacklogId))) {
+            operationModel.setOperationName(OperationName.SPLIT_TASKS.name());
+            operationModel.setOperationStatus(OperationStatus.SUCCESS.name());
+            return new ResponseEntity<>(operationModel, HttpStatus.OK);
+        }
+        operationModel.setOperationName(OperationName.SPLIT_TASKS.name());
+        operationModel.setOperationStatus(OperationStatus.ERROR.name());
+        return new ResponseEntity<>(operationModel, HttpStatus.OK);
     }
 }

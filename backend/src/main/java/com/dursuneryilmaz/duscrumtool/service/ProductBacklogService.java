@@ -13,4 +13,6 @@ public interface ProductBacklogService {
     ProductBacklog updateProductBacklogById(String backlogId, ProductBacklog productBacklog);
 
     Boolean deleteProductBacklogById(String productBacklogId);
+
+    Boolean splitTasksToSprints(ProductBacklog productBacklog);
 }
