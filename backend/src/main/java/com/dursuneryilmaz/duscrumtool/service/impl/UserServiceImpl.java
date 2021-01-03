@@ -1,6 +1,7 @@
 package com.dursuneryilmaz.duscrumtool.service.impl;
 
 import com.dursuneryilmaz.duscrumtool.domain.User;
+import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
 import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.UserRepository;
 import com.dursuneryilmaz.duscrumtool.service.UserService;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public User createUser(User user) {
         if (userRepository.findByEmail(user.getEmail()) != null)
             // refactor exception messages
-            throw new RuntimeException(ExceptionMessages.RECORD_ALREADY_EXISTS.getExceptionMessage());
+            throw new ProductIdException(ExceptionMessages.EMAIL_ALREADY_EXIST.getExceptionMessage());
         user.setUserId(utils.generatePublicId(32));
         // need user dto -> ?
         user.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -37,7 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return null;
+        User user = userRepository.findByEmail(email);
+        if (user == null) throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
+        return user;
     }
 
     @Override
@@ -77,6 +80,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+        User user = userRepository.findByEmail(s);
+        if (user == null) throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
+        return user;
     }
 }
