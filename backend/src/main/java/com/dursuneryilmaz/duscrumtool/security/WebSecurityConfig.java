@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js"
-                ).permitAll().anyRequest().authenticated();
+                // create URIs which does not required authentication in a class named SecurityConstant
+                ).permitAll();//.anyRequest().authenticated();
     }
 }
