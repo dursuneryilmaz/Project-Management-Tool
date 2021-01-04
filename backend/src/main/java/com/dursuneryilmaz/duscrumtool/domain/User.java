@@ -187,6 +187,7 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        // block users which does not verify email -> ?
+        return emailVerificationStatus;
     }
 }
