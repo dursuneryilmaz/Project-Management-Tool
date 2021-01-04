@@ -1,10 +1,9 @@
 package com.dursuneryilmaz.duscrumtool.controller;
 
 import com.dursuneryilmaz.duscrumtool.domain.User;
-import com.dursuneryilmaz.duscrumtool.model.request.UserLoginRequestModel;
-import com.dursuneryilmaz.duscrumtool.model.request.UserRegisterRequestModel;
-import com.dursuneryilmaz.duscrumtool.model.response.UserLoginResponseModel;
-import com.dursuneryilmaz.duscrumtool.model.response.UserResponseModel;
+import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
+import com.dursuneryilmaz.duscrumtool.model.request.*;
+import com.dursuneryilmaz.duscrumtool.model.response.*;
 import com.dursuneryilmaz.duscrumtool.security.SecurityConstants;
 import com.dursuneryilmaz.duscrumtool.security.jwt.JwtTokenProvider;
 import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
@@ -18,10 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -37,6 +33,7 @@ public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    // login user -> can be added authentication filter -> ?
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserLoginRequestModel loginRequest, BindingResult result) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(result);
@@ -44,16 +41,20 @@ public class UserController {
 
         User user = userService.getUserByEmail(loginRequest.getEmail());
 
+        if (!user.isEnabled())
+            throw new ProductIdException(ExceptionMessages.EMAIL_ADDRESS_NOT_VERIFIED.getExceptionMessage());
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                        //  user.getAuthorities() -> ok for roles ?
+                        loginRequest.getPassword(),
+                        user.getAuthorities()       // -> ok for roles ?
                 )
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = SecurityConstants.TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
+
+        String jwt = SecurityConstants.TOKEN_PREFIX + jwtTokenProvider.generateAuthToken(authentication);
         // find way to object mapping to reduce code lines
         UserLoginResponseModel userLoginResponseModel = new UserLoginResponseModel(jwt, true);
         userLoginResponseModel.setUserId(user.getUserId());
@@ -64,8 +65,10 @@ public class UserController {
         return ResponseEntity.ok(userLoginResponseModel);
     }
 
+    // register user
     @PostMapping(path = "/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserRegisterRequestModel userRegisterRequestModel, BindingResult bindingResult) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRegisterRequestModel userRegisterRequestModel,
+                                        BindingResult bindingResult) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
 
@@ -78,5 +81,84 @@ public class UserController {
         BeanUtils.copyProperties(savedUser, userResponseModel);
 
         return new ResponseEntity<UserResponseModel>(userResponseModel, HttpStatus.CREATED);
+    }
+
+    //get user
+    @GetMapping(path = "/{userId}")
+    public UserResponseModel getUser(@PathVariable String userId) {
+        // get users
+        User user = userService.getUserByUserId(userId);
+        UserResponseModel userResponseModel = new UserResponseModel();
+        BeanUtils.copyProperties(user, userResponseModel);
+        return userResponseModel;
+    }
+
+    // update user
+    @PutMapping(path = "/{userId}")
+    public UserResponseModel updateUser(@PathVariable String userId, @RequestBody UserRequestModel userDetail) {
+
+        User user = userService.getUserByUserId(userId);
+        user.setFirstName(userDetail.getFirstName());
+        user.setLastName(userDetail.getLastName());
+        User updatedUser = userService.updateUser(userId, user);
+
+        UserResponseModel userResponseModel = new UserResponseModel();
+        BeanUtils.copyProperties(updatedUser, userResponseModel);
+        return userResponseModel;
+    }
+
+    // delete user
+    @DeleteMapping(path = "/{userId}")
+    public OperationModel deleteUser(@PathVariable String userId) {
+        OperationModel operationModel = new OperationModel();
+        operationModel.setOperationName(OperationName.DELETE.name());
+        userService.deleteUser(userId);
+        operationModel.setOperationStatus(OperationStatus.SUCCESS.name());
+        return operationModel;
+    }
+
+    // user email verification
+    @GetMapping(path = "/email-verification")
+    public OperationModel verifyEmailToken(@RequestParam(value = "token") String token) {
+        OperationModel operationModel = new OperationModel();
+        operationModel.setOperationName(OperationName.VERIFY_EMAIL.name());
+        boolean isVerified = userService.verifyEmailToken(token);
+        if (isVerified) {
+            operationModel.setOperationStatus(OperationStatus.SUCCESS.name());
+        } else {
+            operationModel.setOperationStatus(OperationStatus.ERROR.name());
+        }
+        return operationModel;
+    }
+
+    @PostMapping(path = "/password-reset-request")
+    public OperationModel requestPasswordReset(@RequestBody UserResetPasswordRequestModel passwordResetRequestModel) {
+        OperationModel operationModel = new OperationModel();
+        operationModel.setOperationName(OperationName.PASSWORD_RESET_REQUEST.name());
+
+        boolean isEmailSent = userService.requestPasswordReset(passwordResetRequestModel.getEmail());
+        if (isEmailSent) {
+            operationModel.setOperationStatus(OperationStatus.SUCCESS.name());
+        } else {
+            operationModel.setOperationStatus(OperationStatus.ERROR.name());
+        }
+        return operationModel;
+    }
+
+    @PostMapping(path = "/password-reset")
+    public OperationModel passwordReset(@RequestBody UserNewPasswordRequestModel newPasswordRequestModel) {
+        OperationModel operationModel = new OperationModel();
+
+        boolean operationResult = userService.resetPassword(
+                newPasswordRequestModel.getToken(),
+                newPasswordRequestModel.getPassword());
+
+        operationModel.setOperationName(OperationName.PASSWORD_RESET.name());
+        operationModel.setOperationStatus(OperationStatus.ERROR.name());
+
+        if (operationResult) {
+            operationModel.setOperationStatus(OperationStatus.SUCCESS.name());
+        }
+        return operationModel;
     }
 }
