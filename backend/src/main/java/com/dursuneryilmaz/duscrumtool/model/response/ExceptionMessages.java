@@ -10,7 +10,7 @@ public enum ExceptionMessages {
     AUTHENTICATION_FAILED("Authentication failed"),
     COULD_NOT_UPDATE_RECORD("Could not update record"),
     COULD_NOT_DELETE_RECORD("Could not delete record"),
-    EMAIL_ADDRESS_NOT_VERIFIED("Email address could not be verified"),
+    EMAIL_ADDRESS_NOT_VERIFIED("Email address not verified! Please Verify."),
 
     NO_STAKE_HOLDER("There is no stake holder in this product."),
     NO_SCRUM_MANAGER("There is no scrum manager in this product."),
