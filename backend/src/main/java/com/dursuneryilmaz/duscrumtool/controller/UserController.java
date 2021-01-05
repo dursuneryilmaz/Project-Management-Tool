@@ -30,40 +30,6 @@ public class UserController {
     RequestValidationService requestValidationService;
     @Autowired
     JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    // login user -> can be added authentication filter -> ?
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserLoginRequestModel loginRequest, BindingResult result) {
-        ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(result);
-        if (errorMap != null) return errorMap;
-
-        User user = userService.getUserByEmail(loginRequest.getEmail());
-
-        if (!user.isEnabled())
-            throw new ProductIdException(ExceptionMessages.EMAIL_ADDRESS_NOT_VERIFIED.getExceptionMessage());
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword(),
-                        user.getAuthorities()       // -> ok for roles ?
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = SecurityConstants.TOKEN_PREFIX + jwtTokenProvider.generateAuthToken(authentication);
-        // find way to object mapping to reduce code lines
-        UserLoginResponseModel userLoginResponseModel = new UserLoginResponseModel(jwt, true);
-        userLoginResponseModel.setUserId(user.getUserId());
-        userLoginResponseModel.setFirstName(user.getFirstName());
-        userLoginResponseModel.setLastName(user.getLastName());
-        userLoginResponseModel.setEmail(user.getEmail());
-
-        return ResponseEntity.ok(userLoginResponseModel);
-    }
 
     // register user
     @PostMapping(path = "/register")
