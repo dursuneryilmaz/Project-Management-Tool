@@ -11,7 +11,8 @@ public enum ExceptionMessages {
     COULD_NOT_UPDATE_RECORD("Could not update record"),
     COULD_NOT_DELETE_RECORD("Could not delete record"),
     EMAIL_ADDRESS_NOT_VERIFIED("Email address not verified! Please Verify."),
-
+    ACCOUNT_DISABLED("Account disabled. Please contact with support service."),
+    WRONG_EMAIL_ADDRESS_OR_PASSWORD("Email address or password wrong!"),
     NO_STAKE_HOLDER("There is no stake holder in this product."),
     NO_SCRUM_MANAGER("There is no scrum manager in this product."),
     NO_WORKING_DEVELOPER("There is no developer in this product");
