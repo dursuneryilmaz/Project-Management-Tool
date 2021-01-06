@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -27,16 +28,20 @@ public class ProductController {
     @Autowired
     SprintService sprintService;
     @Autowired
+    UserService userService;
+    @Autowired
     RequestValidationService requestValidationService;
     @Autowired
     Utils utils;
 
     // create product
     @PostMapping
-    public ResponseEntity<?> createProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody Product product, BindingResult bindingResult,
+                                           Principal principal) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
-        return new ResponseEntity<Product>(productService.createProduct(product), HttpStatus.CREATED);
+        User user = userService.getUserByEmail(principal.getName());
+        return new ResponseEntity<Product>(productService.createProduct(product, user), HttpStatus.CREATED);
     }
 
     // get all products

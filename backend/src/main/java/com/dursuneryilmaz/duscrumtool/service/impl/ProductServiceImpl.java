@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     Utils utils;
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createProduct(Product product, User user) {
         // instantiate and assign product backlog before product creation
         ProductBacklog productBacklog = new ProductBacklog();
         productBacklog.setProductBacklogId(utils.generatePublicId(32));
@@ -30,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
         productBacklog.setProduct(product);
 
         product.setProductId(utils.generatePublicId(32));
+        product.getScrumManagerList().add(user);
         product.setProductBacklog(productBacklog);
 
         return productRepository.save(product);

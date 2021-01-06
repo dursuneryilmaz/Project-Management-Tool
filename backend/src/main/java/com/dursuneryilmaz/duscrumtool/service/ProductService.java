@@ -6,7 +6,7 @@ import com.dursuneryilmaz.duscrumtool.domain.User;
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(Product product);
+    Product createProduct(Product product, User user);
 
     Product getProductById(String productId);
 
