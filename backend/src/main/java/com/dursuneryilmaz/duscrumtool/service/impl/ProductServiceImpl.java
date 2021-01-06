@@ -42,8 +42,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        List<Product> projects = productRepository.findAll();
+    public List<Product> getAllProducts(User user) {
+        List<Product> projects =
+                productRepository.findByScrumManagerListContainsOrProductDeveloperListContainsOrStakeHolderListContains(
+                        user, user, user);
+
         if (projects.size() > 0) return projects;
         throw new ProductIdException(ExceptionMessages.NO_RECORDS_FOUND.getExceptionMessage());
     }

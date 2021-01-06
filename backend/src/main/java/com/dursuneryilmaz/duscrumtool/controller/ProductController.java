@@ -46,8 +46,9 @@ public class ProductController {
 
     // get all products
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public List<Product> getAllProducts(Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
+        return productService.getAllProducts(user);
     }
 
     // get product
