@@ -103,9 +103,6 @@ public class User implements Serializable, UserDetails {
         this.email = email;
     }
 
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
 
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;

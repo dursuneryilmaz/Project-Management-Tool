@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
         User savedUserEntity = userRepository.save(user);
 
         // Verify if password was saved successfully
-        if (savedUserEntity.getEncryptedPassword().equals(encodedPassword)) {
+        if (savedUserEntity.getPassword().equals(encodedPassword)) {
             // Remove Password Reset token from database
             usersPasswordResetTokenRepository.delete(usersPasswordResetToken);
             return true;
