@@ -3,13 +3,11 @@ package com.dursuneryilmaz.duscrumtool.controller;
 import com.dursuneryilmaz.duscrumtool.domain.Product;
 import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
 import com.dursuneryilmaz.duscrumtool.domain.Task;
+import com.dursuneryilmaz.duscrumtool.domain.User;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationModel;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationName;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationStatus;
-import com.dursuneryilmaz.duscrumtool.service.ProductBacklogService;
-import com.dursuneryilmaz.duscrumtool.service.ProductService;
-import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
-import com.dursuneryilmaz.duscrumtool.service.TaskService;
+import com.dursuneryilmaz.duscrumtool.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -29,21 +28,27 @@ public class ProductBacklogController {
     @Autowired
     TaskService taskService;
     @Autowired
+    UserService userService;
+    @Autowired
     RequestValidationService requestValidationService;
 
     // create product backlog -> no need ?
     @PostMapping(path = "/{productId}")
-    public ResponseEntity<?> createProductBacklog(@PathVariable String productId, @Valid @RequestBody ProductBacklog productBacklog, BindingResult bindingResult) {
+    public ResponseEntity<?> createProductBacklog(@PathVariable String productId,
+                                                  @Valid @RequestBody ProductBacklog productBacklog,
+                                                  BindingResult bindingResult, Principal principal) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
-        Product product = productService.getProductById(productId);
+        User user = userService.getUserByEmail(principal.getName());
+        Product product = productService.getProductById(productId, user);
         return new ResponseEntity<ProductBacklog>(productBacklogService.createProductBacklog(productBacklog, product), HttpStatus.CREATED);
     }
 
     // get product backlog -> this returns task list also
     @GetMapping(path = "/{productId}")
-    public ResponseEntity<ProductBacklog> getProductBacklog(@PathVariable String productId) {
-        Product product = productService.getProductById(productId);
+    public ResponseEntity<ProductBacklog> getProductBacklog(@PathVariable String productId, Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
+        Product product = productService.getProductById(productId, user);
         return new ResponseEntity<ProductBacklog>(productBacklogService.getByProduct(product), HttpStatus.OK);
     }
 

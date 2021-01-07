@@ -11,6 +11,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByProductId(String publicId);
 
+    Product findByProductIdAndScrumManagerListContains(String productId, User user);
+
     List<Product> findByScrumManagerListContainsOrProductDeveloperListContainsOrStakeHolderListContains(
-            User userManager,User userDev, User userSteakHolder);
+            User userManager, User userDev, User userSteakHolder);
 }

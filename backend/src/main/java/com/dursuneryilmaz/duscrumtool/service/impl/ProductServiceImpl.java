@@ -37,8 +37,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(String productId) {
-        return checkProductExistenceById(productId);
+    public Product getProductById(String productId, User user) {
+        return checkProductExistenceById(productId, user);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProductById(String productId, Product product) {
-        Product productToUpdate = checkProductExistenceById(productId);
+    public Product updateProductById(String productId, Product product, User user) {
+        Product productToUpdate = checkProductExistenceById(productId, user);
         // update selected properties which are required
         productToUpdate.setProjectName(product.getProjectName());
         productToUpdate.setDescription(product.getDescription());
@@ -61,15 +61,16 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(productToUpdate);
     }
 
+    // there will be voting among scrum managers
     @Override
-    public Boolean deleteProductById(String productId) {
-        Product product = checkProductExistenceById(productId);
+    public Boolean deleteProductById(String productId, User user) {
+        Product product = checkProductExistenceById(productId, user);
         productRepository.delete(product);
         return true;
     }
 
-    private Product checkProductExistenceById(String productId) {
-        Product product = productRepository.findByProductId(productId);
+    private Product checkProductExistenceById(String productId, User user) {
+        Product product = productRepository.findByProductIdAndScrumManagerListContains(productId, user);
         if (product == null) throw new ProductIdException(ExceptionMessages.NO_RECORD_FOUND.getExceptionMessage());
         return product;
     }

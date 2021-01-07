@@ -8,13 +8,13 @@ import java.util.List;
 public interface ProductService {
     Product createProduct(Product product, User user);
 
-    Product getProductById(String productId);
+    Product getProductById(String productId, User user);
 
     List<Product> getAllProducts(User user);
 
-    Product updateProductById(String productId, Product product);
+    Product updateProductById(String productId, Product product, User user);
 
-    Boolean deleteProductById(String productId);
+    Boolean deleteProductById(String productId, User user);
 
     List<User> getProductStakeHolders(Product product);
 
@@ -22,7 +22,7 @@ public interface ProductService {
 
     List<User> getProductDevelopers(Product product);
 
-    List<User>  addProductStakeHolder(Product product, User user);
+    List<User> addProductStakeHolder(Product product, User user);
 
     List<User> addProductScrumManager(Product product, User user);
 

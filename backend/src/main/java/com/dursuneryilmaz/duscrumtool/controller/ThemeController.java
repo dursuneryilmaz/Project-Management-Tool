@@ -4,10 +4,7 @@ import com.dursuneryilmaz.duscrumtool.domain.Epic;
 import com.dursuneryilmaz.duscrumtool.domain.Product;
 import com.dursuneryilmaz.duscrumtool.domain.Theme;
 import com.dursuneryilmaz.duscrumtool.domain.User;
-import com.dursuneryilmaz.duscrumtool.service.EpicService;
-import com.dursuneryilmaz.duscrumtool.service.ProductService;
-import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
-import com.dursuneryilmaz.duscrumtool.service.ThemeService;
+import com.dursuneryilmaz.duscrumtool.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -27,13 +25,17 @@ public class ThemeController {
     @Autowired
     EpicService epicService;
     @Autowired
+    UserService userService;
+    @Autowired
     RequestValidationService requestValidationService;
 
     @PostMapping(path = "/{productId}")
-    public ResponseEntity<?> createTheme(@PathVariable String productId, @Valid @RequestBody Theme theme, BindingResult bindingResult) {
+    public ResponseEntity<?> createTheme(@PathVariable String productId, @Valid @RequestBody Theme theme,
+                                         BindingResult bindingResult, Principal principal) {
         ResponseEntity<?> errorMap = requestValidationService.mapValidationErrors(bindingResult);
         if (errorMap != null) return errorMap;
-        Product product = productService.getProductById(productId);
+        User user = userService.getUserByEmail(principal.getName());
+        Product product = productService.getProductById(productId, user);
         return new ResponseEntity<Theme>(themeService.createTheme(theme, product), HttpStatus.CREATED);
     }
 
