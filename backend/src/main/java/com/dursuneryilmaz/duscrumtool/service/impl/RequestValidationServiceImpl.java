@@ -1,5 +1,8 @@
 package com.dursuneryilmaz.duscrumtool.service.impl;
 
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.model.response.OperationModel;
+import com.dursuneryilmaz.duscrumtool.shared.enums.OperationStatus;
 import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +26,13 @@ public class RequestValidationServiceImpl implements RequestValidationService {
             return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
         }
         return null;
+    }
+
+    @Override
+    public ResponseEntity<OperationModel> getAccessDeniedResponseEntity() {
+        OperationModel operationModel = new OperationModel();
+        operationModel.setOperationName(ExceptionMessages.ACCESS_DENIED.getExceptionMessage());
+        operationModel.setOperationStatus(OperationStatus.ERROR.name());
+        return new ResponseEntity<OperationModel>(operationModel, HttpStatus.BAD_REQUEST);
     }
 }
