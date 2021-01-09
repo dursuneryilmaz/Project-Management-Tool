@@ -2,6 +2,7 @@ package com.dursuneryilmaz.duscrumtool.model.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class UserLoginRequestModel implements Serializable {
@@ -11,6 +12,7 @@ public class UserLoginRequestModel implements Serializable {
     @Email(message = "Enter a valid email address!")
     private String email;
     @NotBlank(message = "Password can not be blank!")
+    @Size(min = 8, max = 16, message = "Enter a password in length 8-16 character!")
     private String password;
 
     public String getEmail() {
