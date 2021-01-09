@@ -139,13 +139,13 @@ public class JwtTokenProvider {
     // get userId from emailVerificationToken -> ? use get subject
     public String getUserIdFromEmailVerificationToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(SecurityConstants.EMAIL_VERIFICATION_TOKEN_SECRET).parseClaimsJws(token).getBody();
-        return (String) claims.get("userId");
+        return (String) claims.getSubject();
     }
 
     // get userId from passwordResetToken -> ? use get subject
     public String getUserIdFromPasswordResetToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(SecurityConstants.PASSWORD_RESET_TOKEN_SECRET).parseClaimsJws(token).getBody();
-        return (String) claims.get("userId");
+        return (String) claims.getSubject();
     }
 
 }
