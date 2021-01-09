@@ -3,7 +3,8 @@ package com.dursuneryilmaz.duscrumtool.service.impl;
 import com.dursuneryilmaz.duscrumtool.domain.User;
 import com.dursuneryilmaz.duscrumtool.domain.UsersPasswordResetToken;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
-import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.service.EmailService;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.UserRepository;
 import com.dursuneryilmaz.duscrumtool.repository.UsersPasswordResetTokenRepository;
 import com.dursuneryilmaz.duscrumtool.security.jwt.JwtTokenProvider;
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
     @Autowired
+    EmailService gmailService;
+    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -38,11 +41,14 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(user.getEmail()) != null)
             // refactor exception messages
             throw new ProductIdException(ExceptionMessages.EMAIL_ALREADY_EXIST.getExceptionMessage());
-        user.setUserId(utils.generatePublicId(32));
+        String userId = utils.generatePublicId(32);
+        user.setUserId(userId);
         // need user dto -> ?
         user.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setEmailVerificationToken(jwtTokenProvider.generateEmailVerificationToken(user.getUserId()));
-        return userRepository.save(user);
+        user.setEmailVerificationToken(jwtTokenProvider.generateEmailVerificationToken(userId));
+        User savedUser = userRepository.save(user);
+        gmailService.sendVerificationEmail(savedUser);
+        return savedUser;
 
     }
 
@@ -117,9 +123,7 @@ public class UserServiceImpl implements UserService {
         usersPasswordResetToken.setToken(token);
         usersPasswordResetToken.setUser(user);
         usersPasswordResetTokenRepository.save(usersPasswordResetToken);
-        //isEmailSent = gmailService.sendPasswordResetMail(user.getEmail(), user.getFirstName(), token);
-        //return isEmailSent;
-        return true;
+        return gmailService.sendPasswordResetMail(user.getEmail(), user.getFirstName(), token);
     }
 
     @Override
