@@ -1,4 +1,4 @@
-package com.dursuneryilmaz.duscrumtool.model.response;
+package com.dursuneryilmaz.duscrumtool.shared.enums;
 
 public enum ExceptionMessages {
     MISSING_REQUIRED_FIELD("Missing required field. Please check documentation for required fields"),
@@ -15,8 +15,8 @@ public enum ExceptionMessages {
     WRONG_EMAIL_ADDRESS_OR_PASSWORD("Email address or password wrong!"),
     NO_STAKE_HOLDER("There is no stake holder in this product."),
     NO_SCRUM_MANAGER("There is no scrum manager in this product."),
-    NO_WORKING_DEVELOPER("There is no developer in this product");
-
+    NO_WORKING_DEVELOPER("There is no developer in this product"),
+    ACCESS_DENIED("Access Denies on Your Account");
 
     private String exceptionMessage;
 

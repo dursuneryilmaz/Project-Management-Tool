@@ -1,4 +1,4 @@
-package com.dursuneryilmaz.duscrumtool.model.response;
+package com.dursuneryilmaz.duscrumtool.shared.enums;
 
 public enum OperationStatus {
     SUCCESS,

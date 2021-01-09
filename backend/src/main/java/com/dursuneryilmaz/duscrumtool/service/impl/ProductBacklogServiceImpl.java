@@ -5,7 +5,7 @@ import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
 import com.dursuneryilmaz.duscrumtool.domain.Sprint;
 import com.dursuneryilmaz.duscrumtool.domain.Task;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
-import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.ProductBacklogRepository;
 import com.dursuneryilmaz.duscrumtool.repository.TaskRepository;
 import com.dursuneryilmaz.duscrumtool.service.ProductBacklogService;

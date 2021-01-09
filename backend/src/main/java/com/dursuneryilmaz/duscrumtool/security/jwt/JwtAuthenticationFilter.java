@@ -3,7 +3,7 @@ package com.dursuneryilmaz.duscrumtool.security.jwt;
 import com.dursuneryilmaz.duscrumtool.domain.User;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
 import com.dursuneryilmaz.duscrumtool.model.request.UserLoginRequestModel;
-import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.security.SecurityConstants;
 import com.dursuneryilmaz.duscrumtool.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -2,7 +2,7 @@ package com.dursuneryilmaz.duscrumtool.service.impl;
 
 import com.dursuneryilmaz.duscrumtool.domain.*;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
-import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.TaskRepository;
 import com.dursuneryilmaz.duscrumtool.service.TaskService;
 import com.dursuneryilmaz.duscrumtool.shared.Utils;

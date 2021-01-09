@@ -1,6 +1,6 @@
 package com.dursuneryilmaz.duscrumtool.security.jwt;
 
-import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

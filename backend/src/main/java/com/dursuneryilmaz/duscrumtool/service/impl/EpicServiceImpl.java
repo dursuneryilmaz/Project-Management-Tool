@@ -3,7 +3,7 @@ package com.dursuneryilmaz.duscrumtool.service.impl;
 import com.dursuneryilmaz.duscrumtool.domain.Epic;
 import com.dursuneryilmaz.duscrumtool.domain.Theme;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
-import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.EpicRepository;
 import com.dursuneryilmaz.duscrumtool.service.EpicService;
 import com.dursuneryilmaz.duscrumtool.shared.Utils;

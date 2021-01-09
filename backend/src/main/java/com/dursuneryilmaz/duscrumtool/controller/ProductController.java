@@ -2,8 +2,8 @@ package com.dursuneryilmaz.duscrumtool.controller;
 
 import com.dursuneryilmaz.duscrumtool.domain.*;
 import com.dursuneryilmaz.duscrumtool.model.response.OperationModel;
-import com.dursuneryilmaz.duscrumtool.model.response.OperationName;
-import com.dursuneryilmaz.duscrumtool.model.response.OperationStatus;
+import com.dursuneryilmaz.duscrumtool.shared.enums.OperationName;
+import com.dursuneryilmaz.duscrumtool.shared.enums.OperationStatus;
 import com.dursuneryilmaz.duscrumtool.service.*;
 import com.dursuneryilmaz.duscrumtool.shared.Utils;
 import org.springframework.beans.factory.annotation.Autowired;

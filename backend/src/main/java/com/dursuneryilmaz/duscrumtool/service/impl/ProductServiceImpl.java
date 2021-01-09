@@ -4,7 +4,7 @@ import com.dursuneryilmaz.duscrumtool.domain.Product;
 import com.dursuneryilmaz.duscrumtool.domain.ProductBacklog;
 import com.dursuneryilmaz.duscrumtool.domain.User;
 import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
-import com.dursuneryilmaz.duscrumtool.model.response.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
 import com.dursuneryilmaz.duscrumtool.repository.ProductRepository;
 import com.dursuneryilmaz.duscrumtool.service.ProductService;
 import com.dursuneryilmaz.duscrumtool.shared.Utils;
