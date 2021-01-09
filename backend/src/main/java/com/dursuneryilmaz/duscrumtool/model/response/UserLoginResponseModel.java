@@ -1,6 +1,10 @@
 package com.dursuneryilmaz.duscrumtool.model.response;
 
-public class UserLoginResponseModel extends UserResponseModel {
+import java.io.Serializable;
+
+public class UserLoginResponseModel extends UserResponseModel implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String jwtToken;
     private boolean isLoginSuccess;
 
