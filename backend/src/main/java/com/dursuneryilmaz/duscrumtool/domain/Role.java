@@ -18,7 +18,7 @@ public class Role implements Serializable {
     private Long id;
     @Column(unique = true, nullable = false)
     @Size(min = 32, max = 32)
-    private String publicId;
+    private String roleId;
     @NotBlank(message = "Role name cannot be blank!")
     private String roleName;
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm")
@@ -47,12 +47,12 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public String getPublicId() {
-        return publicId;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
+    public void setRoleId(String publicId) {
+        this.roleId = publicId;
     }
 
     public String getRoleName() {
