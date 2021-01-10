@@ -1,11 +1,15 @@
 package com.dursuneryilmaz.duscrumtool.controller;
 
 import com.dursuneryilmaz.duscrumtool.domain.User;
+import com.dursuneryilmaz.duscrumtool.exception.ProductIdException;
 import com.dursuneryilmaz.duscrumtool.model.request.*;
 import com.dursuneryilmaz.duscrumtool.model.response.*;
 import com.dursuneryilmaz.duscrumtool.security.jwt.JwtTokenProvider;
 import com.dursuneryilmaz.duscrumtool.service.RequestValidationService;
 import com.dursuneryilmaz.duscrumtool.service.UserService;
+import com.dursuneryilmaz.duscrumtool.shared.enums.ExceptionMessages;
+import com.dursuneryilmaz.duscrumtool.shared.enums.OperationName;
+import com.dursuneryilmaz.duscrumtool.shared.enums.OperationStatus;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -53,11 +58,15 @@ public class UserController {
         return userResponseModel;
     }
 
+
     // update user
     @PutMapping(path = "/{userId}")
-    public UserResponseModel updateUser(@PathVariable String userId, @RequestBody UserRequestModel userDetail) {
+    public UserResponseModel updateUser(@PathVariable String userId,
+                                        @RequestBody UserRequestModel userDetail, Principal principal) {
 
         User user = userService.getUserByUserId(userId);
+        if (!(user.getUsername().equals(principal.getName())))
+            throw new ProductIdException(ExceptionMessages.ACCESS_DENIED.getExceptionMessage());
         user.setFirstName(userDetail.getFirstName());
         user.setLastName(userDetail.getLastName());
         User updatedUser = userService.updateUser(userId, user);
@@ -67,7 +76,7 @@ public class UserController {
         return userResponseModel;
     }
 
-    // delete user
+    // delete user -> change delete operation: make required to send user delete request and confirm via email
     @DeleteMapping(path = "/{userId}")
     public OperationModel deleteUser(@PathVariable String userId) {
         OperationModel operationModel = new OperationModel();
