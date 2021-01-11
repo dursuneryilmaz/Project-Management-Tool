@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-public class DuscrumtoolApplication {
+public class DuScrumToolApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DuscrumtoolApplication.class, args);
+        SpringApplication.run(DuScrumToolApplication.class, args);
     }
 
     @Bean
