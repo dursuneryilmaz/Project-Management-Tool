@@ -13,4 +13,6 @@ public interface SprintBacklogService {
     SprintBacklog updateSprintBacklogById(String sprintBacklogId, SprintBacklog sprintBacklog);
 
     Boolean deleteSprintBacklogById(String sprintBacklogId);
+
+    SprintBacklog transferTasksToNextSprint(String sprintBacklogId);
 }
