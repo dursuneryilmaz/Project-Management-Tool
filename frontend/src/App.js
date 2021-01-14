@@ -1,10 +1,13 @@
 import "./App.css";
+import DashboardWrapper from "./components/Dashboard/Dashboard";
 import Wrapper from "./components/Layout/Wrapper";
 
 function App() {
   return (
     <div className="App">
-      <Wrapper>Hello react compositions.</Wrapper>
+      <Wrapper>
+        <DashboardWrapper />
+      </Wrapper>
     </div>
   );
 }
