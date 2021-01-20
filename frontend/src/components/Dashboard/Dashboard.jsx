@@ -1,6 +1,7 @@
 import React from "react";
 import ProductTable from "./ProductTable";
-
+import PieChart from "./PieChart";
+import LineChart from "./LineChart";
 const DashboardWrapper = (props) => {
   return (
     <div>
@@ -107,7 +108,14 @@ const DashboardWrapper = (props) => {
       </div>
 
       {/* Main Content Row */}
-      <ProductTable />
+      <div className="row">
+        <LineChart />
+        <PieChart />
+      </div>
+
+      <div className="row">
+        <ProductTable />
+      </div>
     </div>
   );
 };
